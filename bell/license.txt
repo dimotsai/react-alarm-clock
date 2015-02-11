@@ -1,0 +1,32 @@
+Sound pack downloaded from Freesound.org
+----------------------------------------
+
+This pack of sounds contains sounds by QLC ( http://www.freesound.org/people/QLC/  )
+You can find this pack online at: http://www.freesound.org/people/QLC/packs/4521/
+
+
+License details
+---------------
+
+Sampling+: http://creativecommons.org/licenses/sampling+/1.0/
+Creative Commons 0: http://creativecommons.org/publicdomain/zero/1.0/
+Attribution: http://creativecommons.org/licenses/by/3.0/
+Attribution Noncommercial: http://creativecommons.org/licenses/by-nc/3.0/
+
+
+Sounds in this pack
+-------------------
+
+  * 70217__QLC__85bpm_Zichus.wav
+    * url: http://www.freesound.org/people/QLC/sounds/70217/
+    * license: Sampling+
+  * 70214__QLC__65bpm_piano_melody_0589.wav
+    * url: http://www.freesound.org/people/QLC/sounds/70214/
+    * license: Sampling+
+  * 70213__QLC__152bpm_osng.wav
+    * url: http://www.freesound.org/people/QLC/sounds/70213/
+    * license: Sampling+
+  * 70002__QLC__240bpm_Fractal_Ramp_Sonnet_Track_1.mp3
+    * url: http://www.freesound.org/people/QLC/sounds/70002/
+    * license: Sampling+
+
