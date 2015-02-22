@@ -1,0 +1,89 @@
+.wall-clock {
+    font-size: 100px;
+}
+
+.wall-clock:hover{
+    cursor: pointer;
+}
+
+.alarm-digits {
+    overflow: hidden;
+}
+
+.alarm-digit {
+    float: left;
+    width: 150px;
+}
+
+.alarm-digit button {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: none;
+    width: 100%;
+    height: 30px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.alarm-digit button:active {
+    border: 0;
+    outline: 0 !important;
+    background: #adadad;
+}
+
+.alarm-digit button:focus, .alarm-digit button.focus {
+    border: 0;
+    outline: 0;
+}
+
+.alarm-digit:hover button, .alarm-digit.focus button {
+    background: #e0e0e0;
+}
+
+.alarm-digit input {
+    font-size: 50px;
+    line-height: 50px;
+    height: 64px;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: 0;
+}
+
+.alarm-digit input:focus {
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.alarm-container {
+    overflow: hidden;
+    width: 450px;
+    margin: 0 auto;
+}
+
+.comment {
+    margin-top: 15px;
+    display: relative;
+}
+
+.comment input.form-control {
+    width: 80%;
+    position: relative;
+    display: inline-block;
+}
+
+.comment button {
+    width: 20%;
+    position: relative;
+    display: inline-block;
+}
+
+.bell select {
+    width: 60% !important;
+}
+
+.bell button {
+    width: 20%;
+}
