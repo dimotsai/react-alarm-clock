@@ -12,10 +12,10 @@ var data = [
 /* the default sounds for selection */
 var bells = [
 //    {type: 'audio/mpeg', path: 'mp3/ru-zhen-qu'},
-    {type: 'audio/wav',  path: 'bell/70214__qlc__65bpm-piano-melody-0589'},
-    {type: 'audio/mpeg', path: 'bell/70002__qlc__240bpm-fractal-ramp-sonnet-track-1'},
-    {type: 'audio/wav',  path: 'bell/70213__qlc__152bpm-osng'},
-    {type: 'audio/wav',  path: 'bell/70217__qlc__85bpm-zichus'}
+    {type: 'audio/wav',  path: 'bell/70214__qlc__65bpm-piano-melody-0589.wav'},
+    {type: 'audio/mpeg', path: 'bell/70002__qlc__240bpm-fractal-ramp-sonnet-track-1.mp3'},
+    {type: 'audio/wav',  path: 'bell/70213__qlc__152bpm-osng.wav'},
+    {type: 'audio/wav',  path: 'bell/70217__qlc__85bpm-zichus.wav'}
 ];
 
 /* A clock component displaying the current time */
