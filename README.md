@@ -1,6 +1,10 @@
 React Alarm Clock
 =================
 
+Demo
+----
+http://dimotsai.github.io/react-alarm-clock
+
 Prerequisite
 ------------
 * nodejs >= v0.10.36
