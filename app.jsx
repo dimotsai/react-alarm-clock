@@ -5,17 +5,21 @@ var paddy = function(n, p, c){
     return (pad + n).slice(-pad.length);
 };
 
+var isValidUrl = function(url){
+    var regex = /^(http|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?$/i
+    return !!url.match(regex);
+}
+
 /* the default alarm list */
 var data = [
 ];
 
 /* the default sounds for selection */
 var bells = [
-//    {type: 'audio/mpeg', path: 'mp3/ru-zhen-qu'},
-    {type: 'audio/wav',  path: 'bell/70214__qlc__65bpm-piano-melody-0589.wav'},
-    {type: 'audio/mpeg', path: 'bell/70002__qlc__240bpm-fractal-ramp-sonnet-track-1.mp3'},
-    {type: 'audio/wav',  path: 'bell/70213__qlc__152bpm-osng.wav'},
-    {type: 'audio/wav',  path: 'bell/70217__qlc__85bpm-zichus.wav'}
+    {name: 'piano-melody', type: 'audio/wav',  path: 'bell/70214__qlc__65bpm-piano-melody-0589.wav'},
+    {name: 'fractal-ramp-sonnet', type: 'audio/mpeg', path: 'bell/70002__qlc__240bpm-fractal-ramp-sonnet-track-1.mp3'},
+    {name: 'osng', type: 'audio/wav',  path: 'bell/70213__qlc__152bpm-osng.wav'},
+    {name: 'zichus', type: 'audio/wav',  path: 'bell/70217__qlc__85bpm-zichus.wav'}
 ];
 
 /* A clock component displaying the current time */
@@ -49,39 +53,93 @@ var Bell = React.createClass({
         this.refs.audio.getDOMNode().play();
     },
     getInitialState: function(){
-        return this.props.bells[0];
+        return {
+            bell: this.props.bells[0],
+            inputURL: '',
+            errorFile: false,
+            errorURL: false
+        };
+    },
+    getDefaultProps: function(){
+        return {
+            bells: [],
+            onAddAudio: function(file) { console.log(file); }
+        };
     },
     handleChange: function(event){
-        var state = this.state;
         var key = event.target.value;
-        state = this.props.bells[key];
-        this.setState(state);
+        this.setState({
+            bell: this.props.bells[key]
+        });
     },
     handlePlay: function(){
         this.refs.audio.getDOMNode().load();
         this.refs.audio.getDOMNode().play();
     },
+    handleInputURL: function(event) {
+        this.setState({ inputURL: event.target.value })
+    },
     handleStop: function(){
         this.refs.audio.getDOMNode().pause();
+    },
+    handleAddLocalSound: function(event){
+        var supportAudioType = ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/mp4'];
+        var file = event.target.files[0];
+
+        if (supportAudioType.indexOf(file.type) !== -1) {
+            this.props.onAddAudio({name: file.name, type: file.type, path: URL.createObjectURL(file)});
+            this.setState({ errorFile: false, errorURL: false });
+        } else {
+            console.error('Unsupport audio type: ' + file.type);
+            this.setState({ errorFile: true });
+        }
+    },
+    handleAddAudioURL: function(event){
+        var url = this.state.inputURL;
+        if (isValidUrl(url)) {
+            this.props.onAddAudio({name: url.split('/').pop(), path: url});
+            this.setState({ errorFile: false, errorURL: false, inputURL: '' });
+        } else {
+            this.setState({ errorURL: true });
+        }
     },
     render: function(){
         var options = this.props.bells.map(function(bell, i){
             return (
-                <option value={i} key={i} >{bell.path}</option>
+                <option value={i} key={i} >{bell.name}</option>
             );
         });
+        var errorAlert = <div className="alert alert-danger">Unsupport audio type</div>;
         return (
             <div className="bell">
                 <audio ref="audio" loop>
-                    <source src={this.state.path} type={this.state.type} />
+                    <source src={this.state.bell.path} type={this.state.bell.type} />
                     Your browser does not support the audio element.
                 </audio>
-                <div className="form-inline">
-                    <select className="form-control" onChange={this.handleChange} >
-                        {options}
-                    </select>
-                    <button className="btn btn-default" onClick={this.handlePlay}>Preview</button>
-                    <button className="btn btn-danger" onClick={this.handleStop}>Stop</button>
+               <div className="form">
+                    <div className="form-group form-inline">
+                        <select className="form-control" onChange={this.handleChange}>
+                            {options}
+                        </select>
+                        <button className="btn btn-primary" onClick={this.handlePlay}><span className="glyphicon glyphicon-play"></span></button>
+                        <button className="btn btn-default" onClick={this.handleStop}><span className="glyphicon glyphicon-stop"></span></button>
+                    </div>
+                    <div className="form-group">
+                        <label>Local audio file</label>
+                        <div className="form-group">
+                            <label htmlFor="local-sound" className="btn btn-default">Browse...</label>
+                            <input id="local-sound" className="hidden" type="file" onChange={this.handleAddLocalSound}/>
+                        </div>
+                        { this.state.errorFile ? errorAlert : undefined }
+                    </div>
+                    <div className="form-group">
+                        <label>Audio URL</label>
+                        <div className="form-group form-inline">
+                            <input className="form-control" onChange={this.handleInputURL} value={this.state.inputURL}/>
+                            <button className="btn btn-default" onClick={this.handleAddAudioURL}>Add</button>
+                        </div>
+                        { this.state.errorURL ? errorAlert : undefined }
+                    </div>
                 </div>
             </div>
         );
@@ -314,6 +372,9 @@ var AlarmDigit = React.createClass({
 
 /* main component */
 var Alarm = React.createClass({
+    getInitialState: function() {
+        return { bells: bells };
+    },
     handleCarry: function(digit){
         this.refs[digit].handleCarry();
     },
@@ -329,6 +390,11 @@ var Alarm = React.createClass({
         date.setMinutes(this.refs.minuteDigit.state.value);
         date.setSeconds(this.refs.secondDigit.state.value);
         this.refs.alarmList.handleAddEntry({time: date, comment: this.refs.comment.getDOMNode().value});
+    },
+    handleAddAudio: function(audio){
+        this.setState({
+            bells: this.state.bells.concat(audio)
+        });
     },
     render: function(){
         var date = new Date();
@@ -346,7 +412,7 @@ var Alarm = React.createClass({
                         <button className="btn btn-default" type="button" onClick={this.handleAddAlarm}><span className="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                     </div>
                     <h2>Sounds</h2>
-                    <Bell ref="bell" bells={bells}/>
+                    <Bell ref="bell" bells={this.state.bells} onAddAudio={this.handleAddAudio}/>
                     <h2>Alarms</h2>
                     <AlarmList data={data} ref="alarmList" onRing={this.handleRing}/>
                 </div>
