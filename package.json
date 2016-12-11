@@ -1,0 +1,29 @@
+{
+  "name": "react-alarm-clock",
+  "version": "0.1.0",
+  "description": "A React web alarm clock",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel app.jsx -o app.js",
+    "serve": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimotsai/react-alarm-clock.git"
+  },
+  "keywords": [
+    "alarm"
+  ],
+  "author": "dimotsai",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/dimotsai/react-alarm-clock/issues"
+  },
+  "homepage": "https://github.com/dimotsai/react-alarm-clock#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "http-server": "^0.9.0"
+  }
+}

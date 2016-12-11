@@ -5,13 +5,10 @@ Demo
 ----
 http://dimotsai.github.io/react-alarm-clock
 
-Prerequisite
-------------
-* nodejs >= v0.10.36
-* jsx >= 0.12.2
-
-Compile js from jsx
+Installation
 -------------------
 ```
-jsx --extension jsx app.jsx > app.js
+npm run build
+npm run serve
 ```
+
