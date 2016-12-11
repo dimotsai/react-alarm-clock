@@ -10,6 +10,11 @@ var isValidUrl = function (url) {
     return !!url.match(regex);
 };
 
+var getExt = function (filename) {
+    var regex = /(?:\.([^.]+))?$/i;
+    return regex.exec(filename)[1];
+};
+
 /* the default alarm list */
 var data = [];
 
@@ -85,7 +90,7 @@ var Bell = React.createClass({
         this.refs.audio.getDOMNode().pause();
     },
     handleAddLocalSound: function (event) {
-        var supportAudioType = ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/mp4'];
+        var supportAudioType = ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/flac', 'audio/x-flac'];
         var file = event.target.files[0];
 
         if (supportAudioType.indexOf(file.type) !== -1) {
@@ -97,9 +102,18 @@ var Bell = React.createClass({
         }
     },
     handleAddAudioURL: function (event) {
+        var mime = {
+            mp3: 'audio/mpeg',
+            flac: 'audio/flac',
+            ogg: 'audio/ogg',
+            oga: 'audio/ogg',
+            wav: 'audio/wav',
+            weba: 'audio/webm'
+        };
         var url = this.state.inputURL;
-        if (isValidUrl(url)) {
-            this.props.onAddAudio({ name: url.split('/').pop(), path: url });
+        var ext = getExt(url);
+        if (isValidUrl(url) && mime[ext]) {
+            this.props.onAddAudio({ name: url.split('/').pop(), path: url, type: mime[ext] });
             this.setState({ errorFile: false, errorURL: false, inputURL: '' });
         } else {
             this.setState({ errorURL: true });
@@ -124,7 +138,7 @@ var Bell = React.createClass({
             React.createElement(
                 'audio',
                 { ref: 'audio', loop: true },
-                React.createElement('source', { src: this.state.bell.path, type: this.state.bell.type }),
+                React.createElement('source', { src: this.state.bell.path }),
                 'Your browser does not support the audio element.'
             ),
             React.createElement(
