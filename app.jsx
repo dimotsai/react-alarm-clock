@@ -15,6 +15,19 @@ var getExt = function(filename){
     return regex.exec(filename)[1];
 };
 
+var ext2mime = function(ext) {
+    var mime = {
+        mp3: 'audio/mpeg',
+        flac: 'audio/flac',
+        ogg: 'audio/ogg',
+        oga: 'audio/ogg',
+        wav: 'audio/wav',
+        weba: 'audio/webm'
+    };
+
+    return mime[ext];
+};
+
 /* the default alarm list */
 var data = [
 ];
@@ -90,28 +103,23 @@ var Bell = React.createClass({
     handleAddLocalSound: function(event){
         var supportAudioType = ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/flac', 'audio/x-flac'];
         var file = event.target.files[0];
+        var ext = getExt(file.name);
+        var type = file.type ? file.type : ext2mime(ext);
 
-        if (supportAudioType.indexOf(file.type) !== -1) {
-            this.props.onAddAudio({name: file.name, type: file.type, path: URL.createObjectURL(file)});
+        if (supportAudioType.indexOf(type) !== -1) {
+            this.props.onAddAudio({name: file.name, type: type, path: URL.createObjectURL(file)});
             this.setState({ errorFile: false, errorURL: false });
         } else {
-            console.error('Unsupport audio type: ' + file.type);
+            console.error('Unsupported audio type: ' + file.type);
             this.setState({ errorFile: true });
         }
     },
     handleAddAudioURL: function(event){
-        var mime = {
-            mp3: 'audio/mpeg',
-            flac: 'audio/flac',
-            ogg: 'audio/ogg',
-            oga: 'audio/ogg',
-            wav: 'audio/wav',
-            weba: 'audio/webm'
-        };
         var url = this.state.inputURL;
         var ext = getExt(url);
-        if (isValidUrl(url) && mime[ext]) {
-            this.props.onAddAudio({name: url.split('/').pop(), path: url, type: mime[ext]});
+        var type = ext2mime(ext);
+        if (isValidUrl(url) && type) {
+            this.props.onAddAudio({name: url.split('/').pop(), path: url, type: type});
             this.setState({ errorFile: false, errorURL: false, inputURL: '' });
         } else {
             this.setState({ errorURL: true });
@@ -123,7 +131,7 @@ var Bell = React.createClass({
                 <option value={i} key={i} >{bell.name}</option>
             );
         });
-        var errorAlert = <div className="alert alert-danger">Unsupport audio type</div>;
+        var errorAlert = <div className="alert alert-danger">Unsupported audio type</div>;
         return (
             <div className="bell">
                 <audio ref="audio" loop>
