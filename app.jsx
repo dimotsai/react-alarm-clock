@@ -101,7 +101,7 @@ var Bell = React.createClass({
         this.refs.audio.getDOMNode().pause();
     },
     handleAddLocalSound: function(event){
-        var supportAudioType = ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/flac', 'audio/x-flac'];
+        var supportAudioType = ['audio/ogg', 'audio/webm', 'audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/mp3', 'audio/mp4', 'audio/flac', 'audio/x-flac'];
         var file = event.target.files[0];
         var ext = getExt(file.name);
         var type = file.type ? file.type : ext2mime(ext);
